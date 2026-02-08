@@ -50,11 +50,14 @@
 
     .big-btn { font-size: 22px; padding: 18px 30px; }
 
-    /* Corazón grande */
     #heart {
       font-size: 120px;
       cursor: pointer;
       transition: transform 0.15s ease, filter 0.3s ease;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
     }
 
     #heart:active { transform: scale(1.15); }
@@ -78,7 +81,7 @@
       transition: opacity 1.2s ease;
     }
 
-    #teAmo.show { opacity: 1; }
+    #teAmo.show { opacity: 1; animation: beat 1s infinite; }
 
     #teAmo small { font-size: 40px; margin-top: 20px; }
 
@@ -88,6 +91,11 @@
       font-size: 26px;
       animation: floatUp 5s linear forwards;
       z-index: 1;
+    }
+
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
     }
 
     @keyframes floatUp { to { transform: translateY(-120vh); opacity: 0; } }
@@ -121,6 +129,9 @@
   </style>
 </head>
 <body>
+
+  <!-- Música romántica -->
+  <audio id="bgMusic" src="serendipity.mp3" preload="auto"></audio>
 
   <div id="teAmo">
     TE AMO ❤️
@@ -179,10 +190,13 @@
 
     const quizDiv = document.getElementById("quiz");
     const heart = document.getElementById("heart");
+    const music = document.getElementById("bgMusic");
 
     function startGame() {
       document.getElementById("startScreen").classList.add("hidden");
       quizDiv.classList.remove("hidden");
+      music.volume = 0.6;
+      music.play().catch(()=>{});
       showQuestion();
     }
 
@@ -241,10 +255,31 @@
 
     function finalLove() {
       document.getElementById("special").classList.add("hidden");
-      document.getElementById("teAmo").classList.add("show");
 
       const cupid = document.getElementById("cupidCharacter");
       cupid.style.display = "block";
+
+      const triggerTime = 65;
+
+      // Si la canción no ha llegado a ese momento, saltar cerca del punto bonito
+      if (music.currentTime < triggerTime - 2) {
+        try { music.currentTime = triggerTime - 1; } catch(e) {}
+      }
+
+      // Mostrar TE AMO exactamente en el momento emocional
+      const checkMoment = () => {
+        if (music.currentTime >= triggerTime) {
+          document.getElementById("teAmo").classList.add("show");
+          music.removeEventListener("timeupdate", checkMoment);
+        }
+      };
+
+      music.addEventListener("timeupdate", checkMoment);
+
+      // Respaldo: si por alguna razón no dispara el evento, mostrar en 2s
+      setTimeout(() => {
+        document.getElementById("teAmo").classList.add("show");
+      }, 2000);
 
       setInterval(() => {
         const h = document.createElement("div");
