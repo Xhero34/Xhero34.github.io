@@ -13,12 +13,12 @@
       font-family: 'Poppins', sans-serif;
       background: radial-gradient(circle at top, #ff9a9e, #ff4b6e);
       color: #fff;
-      text-align: center;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
       overflow: hidden;
+      text-align: center;
     }
 
     .card {
@@ -28,15 +28,11 @@
       padding: 32px;
       max-width: 440px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-      position: relative;
       z-index: 2;
       font-weight: 700;
     }
 
-    h1, h2 {
-      font-family: 'Playfair Display', serif;
-      font-weight: 900;
-    }
+    h1, h2 { font-family: 'Playfair Display', serif; font-weight: 900; }
 
     button {
       margin: 10px;
@@ -53,6 +49,15 @@
     .hidden { display: none; }
 
     .big-btn { font-size: 22px; padding: 18px 30px; }
+
+    /* Corazón grande */
+    #heart {
+      font-size: 120px;
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.3s ease;
+    }
+
+    #heart:active { transform: scale(1.15); }
 
     #teAmo {
       position: fixed;
@@ -87,7 +92,6 @@
 
     @keyframes floatUp { to { transform: translateY(-120vh); opacity: 0; } }
 
-    /* Globitos */
     .bubble {
       position: fixed;
       bottom: 80px;
@@ -101,11 +105,8 @@
       z-index: 6;
     }
 
-    @keyframes bubbleUp {
-      to { transform: translateY(-120vh); opacity: 0; }
-    }
+    @keyframes bubbleUp { to { transform: translateY(-120vh); opacity: 0; } }
 
-    /* Personaje */
     #cupidCharacter {
       position: fixed;
       bottom: 10px;
@@ -116,11 +117,7 @@
       animation: walk 10s linear infinite;
     }
 
-    @keyframes walk {
-      0% { right: -120px; }
-      100% { right: 110%; }
-    }
-
+    @keyframes walk { 0% { right: -120px; } 100% { right: 110%; } }
   </style>
 </head>
 <body>
@@ -135,8 +132,8 @@
   <div class="card">
 
     <div id="startScreen">
-      <h1 onclick="startGame()">💘 Nuestro Juego 💘</h1>
-      <p>Haz clic para comenzar ✨</p>
+      <h1>💘 Nuestro Juego 💘</h1>
+      <button class="big-btn" onclick="startGame()">Comenzar ✨</button>
     </div>
 
     <div id="quiz" class="hidden"></div>
@@ -152,7 +149,10 @@
     </div>
 
     <div id="finalMessage" class="hidden">
-      <p>Lo que mas admiro de ti es que a pesar de las adversidades... Te amo mucho.</p>
+      <p>
+        Lo que mas admiro de ti es que a pesar de las adversidades y problemas que has tenido,
+        eres una chica muy fuerte y capaz que siempre intenta resolver... Te amo mucho.
+      </p>
       <button class="big-btn" onclick="showSpecial()">Pregunta especial 💍</button>
     </div>
 
@@ -175,7 +175,10 @@
 
     let index = 0;
     let specialClicks = 0;
+    let heartClicks = 0;
+
     const quizDiv = document.getElementById("quiz");
+    const heart = document.getElementById("heart");
 
     function startGame() {
       document.getElementById("startScreen").classList.add("hidden");
@@ -190,34 +193,56 @@
 
     function selectOption(i) {
       const q = questions[index];
+
       if (q.special) {
         specialClicks++;
-        if (specialClicks >= 3) quizDiv.innerHTML = `<button class='big-btn' onclick='startHeart()'>Ninguna</button>`;
+        if (specialClicks >= 3) {
+          quizDiv.innerHTML = `<button class='big-btn' onclick='startHeart()'>Ninguna</button>`;
+        }
         return;
       }
+
       document.getElementById("message").textContent = i === q.correct ? "¡Correcto! 💖" : "Casi 😅 pero te amo.";
       quizDiv.classList.add("hidden");
       document.getElementById("result").classList.remove("hidden");
     }
 
-    function nextQuestion() { index++; document.getElementById("result").classList.add("hidden"); quizDiv.classList.remove("hidden"); showQuestion(); }
+    function nextQuestion() {
+      index++;
+      document.getElementById("result").classList.add("hidden");
+      quizDiv.classList.remove("hidden");
+      showQuestion();
+    }
 
-    function startHeart() { quizDiv.classList.add("hidden"); document.getElementById("heartGame").classList.remove("hidden"); }
+    function startHeart() {
+      quizDiv.classList.add("hidden");
+      document.getElementById("heartGame").classList.remove("hidden");
+    }
 
-    let clicks = 0;
-    document.getElementById("heart").onclick = () => {
-      clicks++;
-      if (clicks > 15) heart.textContent = "❤️";
-      else if (clicks > 10) heart.textContent = "💖";
-      else if (clicks > 5) heart.textContent = "💗";
-      if (clicks >= 18) { document.getElementById("heartGame").classList.add("hidden"); document.getElementById("finalMessage").classList.remove("hidden"); }
+    heart.onclick = () => {
+      heartClicks++;
+
+      if (heartClicks > 15) heart.textContent = "❤️";
+      else if (heartClicks > 10) heart.textContent = "💖";
+      else if (heartClicks > 5) heart.textContent = "💗";
+
+      heart.style.filter = `drop-shadow(0 0 ${heartClicks * 2}px #ff2e63)`;
+
+      if (heartClicks >= 18) {
+        document.getElementById("heartGame").classList.add("hidden");
+        document.getElementById("finalMessage").classList.remove("hidden");
+      }
     };
 
-    function showSpecial() { document.getElementById("finalMessage").classList.add("hidden"); document.getElementById("special").classList.remove("hidden"); }
+    function showSpecial() {
+      document.getElementById("finalMessage").classList.add("hidden");
+      document.getElementById("special").classList.remove("hidden");
+    }
 
     function finalLove() {
       document.getElementById("special").classList.add("hidden");
       document.getElementById("teAmo").classList.add("show");
+
       const cupid = document.getElementById("cupidCharacter");
       cupid.style.display = "block";
 
