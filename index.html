@@ -27,10 +27,11 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      overflow-x: hidden;
+      overflow: hidden;
       padding: 15px;
     }
 
+    /* Tarjeta Principal */
     .card {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
@@ -43,6 +44,7 @@
       position: relative;
       border: 2px solid #fff;
       z-index: 10;
+      transition: opacity 0.5s ease;
     }
 
     h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 15px; }
@@ -76,24 +78,66 @@
       50% { transform: scale(1.03); }
     }
 
-    /* Estilo para el mensaje emotivo y el corazón */
-    .emotional-box { text-align: justify; font-size: 0.9rem; background: #fff0f3; padding: 15px; border-radius: 15px; border-left: 4px solid var(--primary); margin-bottom: 20px; }
+    .emotional-box { text-align: justify; font-size: 0.9rem; background: #fff0f3; padding: 18px; border-radius: 15px; border-left: 5px solid var(--primary); margin-bottom: 20px; }
 
-    #mainHeart { font-size: 70px; cursor: pointer; display: inline-block; transition: transform 0.1s; margin: 10px 0; }
+    #mainHeart { font-size: 70px; cursor: pointer; display: inline-block; transition: transform 0.1s; margin: 10px 0; user-select: none; }
 
-    #noBtn { background: #eee; color: #888; position: relative; }
+    #noBtn { background: #eee; color: #888; position: relative; z-index: 5; }
 
-    /* Pantalla Final */
+    /* PANTALLA FINAL */
     #finalOverlay {
-      position: fixed; inset: 0; background: white; z-index: 100;
+      position: fixed; inset: 0; background: radial-gradient(circle, #fff, #ffeef2); z-index: 100;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity 1s ease; padding: 20px; text-align: center;
+      opacity: 0; pointer-events: none; transition: opacity 1.5s ease; padding: 20px; text-align: center;
     }
     #finalOverlay.show { opacity: 1; pointer-events: auto; }
-    .romantic-text { font-family: 'Great Vibes', cursive; font-size: 4.5rem; color: var(--primary); margin: 0; }
 
-    .heart-particle { position: absolute; color: var(--primary); animation: fly 4s linear forwards; pointer-events: none; }
-    @keyframes fly { 0% { transform: translateY(0) rotate(0); opacity: 1; } 100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; } }
+    .romantic-text { 
+      font-family: 'Great Vibes', cursive; 
+      font-size: clamp(4rem, 15vw, 6rem); 
+      color: var(--primary); 
+      margin: 0;
+      z-index: 110;
+      text-shadow: 2px 4px 10px rgba(0,0,0,0.05);
+      animation: heartbeat 1.5s infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    /* Burbujas y Corazones */
+    .bubble {
+      position: fixed;
+      bottom: -100px;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--primary);
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      box-shadow: 0 5px 15px rgba(255, 46, 99, 0.1);
+      animation: floatUp 6s linear forwards;
+      z-index: 105;
+      border: 1px solid rgba(255, 46, 99, 0.2);
+    }
+
+    .heart-particle {
+      position: fixed;
+      color: var(--primary);
+      animation: floatUp 4s linear forwards;
+      z-index: 104;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) translateX(0) rotate(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-110vh) translateX(30px) rotate(360deg); opacity: 0; }
+    }
 
     .hidden { display: none !important; }
   </style>
@@ -104,7 +148,7 @@
 
   <div id="finalOverlay">
     <h2 class="romantic-text">Te Amo</h2>
-    <p style="font-weight: bold; color: var(--primary); margin-top: 20px;">💘 Feliz 14 de Febrero, Valentina 💘</p>
+    <p style="font-weight: bold; color: var(--primary); margin-top: 20px; z-index: 110;">💘 Feliz 14 de Febrero, Valentina 💘</p>
   </div>
 
   <div class="card" id="gameCard">
@@ -128,7 +172,7 @@
         hacer todo tú sola... eres inteligente, con un bonito corazón y sabes amar. 
         Creo en ti en todo, y en lo que puedes lograr. Te amo mucho.
       </div>
-      <p style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">¡Ahora llena este corazón!</p>
+      <p style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">¡Ahora llena este corazón de clics!</p>
       <div id="mainHeart">🤍</div>
       <p id="progressText" style="font-weight: bold;">0%</p>
     </div>
@@ -150,6 +194,12 @@
     let noCount = 0;
     const music = document.getElementById('bgMusic');
 
+    const phrases = [
+      "Te amo", "Valentina", "Hermosa", "Eres mía", "Mi vida", 
+      "Mi reina", "Siempre juntos", "Eres perfecta", "Mi lugar seguro", 
+      "Mi todo", "Eres increíble", "Te adoro", "Mi niña fuerte"
+    ];
+
     const questions = [
       { q: "¿Qué anillo te regalé?", ops: ["Un anillo de girasol", "Anillo de plata", "No tengo"], ans: 0 },
       { q: "¿Por dónde nos conocimos?", ops: ["Facebook", "X (Twitter)", "Instagram"], ans: 2 },
@@ -160,7 +210,6 @@
     function nextStep(step) {
       if(currentStep === 0) music.play().catch(() => {});
       document.getElementById('step-0').classList.add('hidden');
-      
       if(step === 1) {
         document.getElementById('quiz-container').classList.remove('hidden');
         showQuestion();
@@ -210,7 +259,6 @@
         let p = heartClicks * 10;
         document.getElementById('progressText').innerText = p + "%";
         h.style.transform = `scale(${1 + heartClicks * 0.1})`;
-        
         if(heartClicks === 3) h.innerText = "💖";
         if(heartClicks === 6) h.innerText = "💗";
         if(heartClicks === 10) {
@@ -226,19 +274,26 @@
     function moveNo() {
       const noBtn = document.getElementById('noBtn');
       const yesBtn = document.getElementById('yesBtn');
-      const x = Math.random() * 100 - 50;
+      const x = Math.random() * 140 - 70;
       const y = Math.random() * 60 + 40;
       noBtn.style.transform = `translate(${x}px, ${y}px)`;
       noCount++;
-      yesBtn.style.transform = `scale(${1 + (noCount * 0.15)})`;
-      const phrases = ["¿Segura?", "Piénsalo...", "Mmm... no", "¡Epa!", "¡El otro botón!"];
-      if(noCount < phrases.length) noBtn.innerText = phrases[noCount];
+      yesBtn.style.transform = `scale(${1 + (noCount * 0.2)})`;
+      const txt = ["¿Segura?", "Piénsalo...", "No seas así", "¡Ey!", "El botón rosa"];
+      if(noCount < txt.length) noBtn.innerText = txt[noCount];
     }
 
     function jumpToFinal() {
-      document.getElementById('gameCard').classList.add('hidden');
-      document.getElementById('finalOverlay').classList.add('show');
-      setInterval(createHeart, 200);
+      document.getElementById('gameCard').style.opacity = "0";
+      setTimeout(() => {
+        document.getElementById('gameCard').classList.add('hidden');
+        document.getElementById('finalOverlay').classList.add('show');
+        
+        // Iniciar animaciones
+        setInterval(createHeart, 300);
+        setInterval(createBubble, 700);
+      }, 500);
+
       if(music.duration > 60) music.currentTime = 65;
       music.play();
     }
@@ -246,12 +301,23 @@
     function createHeart() {
       const h = document.createElement('div');
       h.classList.add('heart-particle');
-      h.innerHTML = "❤️";
+      h.innerHTML = ["❤️", "💖", "💝", "💗"][Math.floor(Math.random() * 4)];
       h.style.left = Math.random() * 100 + "vw";
-      h.style.top = "100vh";
-      h.style.fontSize = Math.random() * 20 + 20 + "px";
+      h.style.bottom = "-50px";
+      h.style.fontSize = Math.random() * 15 + 15 + "px";
+      h.style.animationDuration = (Math.random() * 2 + 3) + "s";
       document.body.appendChild(h);
-      setTimeout(() => h.remove(), 4000);
+      setTimeout(() => h.remove(), 5000);
+    }
+
+    function createBubble() {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      b.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+      b.style.left = Math.random() * 70 + 15 + "vw";
+      b.style.animationDuration = (Math.random() * 2 + 5) + "s";
+      document.body.appendChild(b);
+      setTimeout(() => b.remove(), 6500);
     }
   </script>
 </body>
