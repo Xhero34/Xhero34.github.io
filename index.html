@@ -11,7 +11,7 @@
     :root {
       --primary: #ff2e63;
       --gold: #ffd700;
-      --soft-pink: #ffc2d1;
+      --bg-color: #ffeef2;
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -19,7 +19,7 @@
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: #ffeef2;
+      background: var(--bg-color);
       background-image: radial-gradient(#ffccd5 1px, transparent 1px);
       background-size: 20px 20px;
       color: #444;
@@ -27,136 +27,75 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      overflow: hidden;
+      overflow-x: hidden;
       padding: 15px;
     }
 
-    /* Tarjeta Elegante */
     .card {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
       border-radius: 30px;
-      padding: 35px 25px;
+      padding: 30px 20px;
       width: 100%;
       max-width: 400px;
-      box-shadow: 0 20px 40px rgba(255, 46, 99, 0.2);
+      box-shadow: 0 20px 40px rgba(255, 46, 99, 0.15);
       text-align: center;
       position: relative;
       border: 2px solid #fff;
       z-index: 10;
     }
 
-    h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--primary); margin-top: 0; }
-    p { font-size: 1rem; line-height: 1.5; color: #666; }
+    h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 15px; }
+    p { font-size: 0.95rem; line-height: 1.6; color: #555; margin-bottom: 20px; }
 
-    /* Botones */
-    .btn-container {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      align-items: center;
-      margin-top: 20px;
-    }
+    .btn-container { display: flex; flex-direction: column; gap: 10px; align-items: center; }
 
     button {
       border: none;
-      padding: 15px 30px;
+      padding: 14px 25px;
       border-radius: 50px;
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
       width: 100%;
-      max-width: 250px;
-      font-family: 'Poppins', sans-serif;
+      max-width: 280px;
     }
 
-    .btn-main { background: var(--primary); color: white; box-shadow: 0 8px 15px rgba(255, 46, 99, 0.3); }
-    .btn-main:hover { transform: scale(1.05); }
-
-    /* Botón Especial 14 de Febrero */
+    .btn-main { background: var(--primary); color: white; box-shadow: 0 5px 15px rgba(255, 46, 99, 0.2); }
     .btn-gold {
       background: linear-gradient(45deg, #ff9a9e, #ff2e63);
       color: white;
       border: 2px solid var(--gold);
-      font-size: 1.1rem;
       animation: pulseGold 2s infinite;
-      margin-bottom: 10px;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+      margin-bottom: 15px;
     }
 
     @keyframes pulseGold {
-      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
-      70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); }
-      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
     }
 
-    /* Lógica del botón NO */
-    #noBtn {
-      background: #eee;
-      color: #888;
-      position: relative;
-      transition: all 0.2s ease;
-    }
+    /* Estilo para el mensaje emotivo y el corazón */
+    .emotional-box { text-align: justify; font-size: 0.9rem; background: #fff0f3; padding: 15px; border-radius: 15px; border-left: 4px solid var(--primary); margin-bottom: 20px; }
+
+    #mainHeart { font-size: 70px; cursor: pointer; display: inline-block; transition: transform 0.1s; margin: 10px 0; }
+
+    #noBtn { background: #eee; color: #888; position: relative; }
 
     /* Pantalla Final */
     #finalOverlay {
-      position: fixed;
-      inset: 0;
-      background: white;
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 1s ease;
-      text-align: center;
-      padding: 20px;
+      position: fixed; inset: 0; background: white; z-index: 100;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 1s ease; padding: 20px; text-align: center;
     }
-
     #finalOverlay.show { opacity: 1; pointer-events: auto; }
+    .romantic-text { font-family: 'Great Vibes', cursive; font-size: 4.5rem; color: var(--primary); margin: 0; }
 
-    .romantic-text {
-      font-family: 'Great Vibes', cursive;
-      font-size: 5rem;
-      color: var(--primary);
-      margin: 0;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .message-box {
-      background: #fff0f3;
-      padding: 25px;
-      border-radius: 20px;
-      border: 1px dashed var(--primary);
-      margin-top: 20px;
-      max-width: 90%;
-    }
-
-    /* Corazones Flotantes */
-    .heart {
-      position: absolute;
-      color: var(--primary);
-      font-size: 20px;
-      user-select: none;
-      pointer-events: none;
-      animation: fly 4s linear forwards;
-    }
-
-    @keyframes fly {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-100vh) scale(1.5) rotate(360deg); opacity: 0; }
-    }
+    .heart-particle { position: absolute; color: var(--primary); animation: fly 4s linear forwards; pointer-events: none; }
+    @keyframes fly { 0% { transform: translateY(0) rotate(0); opacity: 1; } 100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; } }
 
     .hidden { display: none !important; }
-    
-    /* Responsive tweaks */
-    @media (max-width: 380px) {
-      h1 { font-size: 1.5rem; }
-      .romantic-text { font-size: 3.5rem; }
-    }
   </style>
 </head>
 <body>
@@ -165,140 +104,153 @@
 
   <div id="finalOverlay">
     <h2 class="romantic-text">Te Amo</h2>
-    <div class="message-box">
-      <p style="font-style: italic; color: #ff2e63; font-weight: 600;">
-        "Cada momento contigo es un regalo, Valentina. <br> Gracias por ser mi razón para sonreír."
-      </p>
-    </div>
-    <p style="margin-top: 30px; font-weight: bold;">💘 Feliz 14 de Febrero 💘</p>
+    <p style="font-weight: bold; color: var(--primary); margin-top: 20px;">💘 Feliz 14 de Febrero, Valentina 💘</p>
   </div>
 
   <div class="card" id="gameCard">
     <div id="step-0">
       <button class="btn-gold" onclick="jumpToFinal()">✨ Feliz 14 de Febrero ✨</button>
-      <h1>Hola mi vida 💘</h1>
-      <p>Tengo algo pequeño preparado para ti.<br>¿Jugamos un rato?</p>
-      <div class="btn-container">
-        <button class="btn-main" onclick="nextStep(1)">¡Claro que sí! 😍</button>
+      <h1>Hola Valentina 💘</h1>
+      <p>Hice este pequeño juego para recordarte cuánto te amo. ¿Empezamos?</p>
+      <button class="btn-main" onclick="nextStep(1)">¡Sí, vamos! 😍</button>
+    </div>
+
+    <div id="quiz-container" class="hidden">
+      <h1 id="quiz-title">Pregunta</h1>
+      <p id="quiz-question"></p>
+      <div class="btn-container" id="quiz-options"></div>
+    </div>
+
+    <div id="heart-step" class="hidden">
+      <div class="emotional-box">
+        Lo que más me gusta de ti es que a pesar de las adversidades y problemas que has tenido, 
+        eres una chica muy fuerte y capaz que siempre intenta resolver. Y aunque siempre lo intentes 
+        hacer todo tú sola... eres inteligente, con un bonito corazón y sabes amar. 
+        Creo en ti en todo, y en lo que puedes lograr. Te amo mucho.
       </div>
+      <p style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">¡Ahora llena este corazón!</p>
+      <div id="mainHeart">🤍</div>
+      <p id="progressText" style="font-weight: bold;">0%</p>
     </div>
 
-    <div id="step-1" class="hidden">
-      <h1>¿Te acuerdas?</h1>
-      <p>¿Dónde fue nuestra primera cita?</p>
-      <div class="btn-container">
-        <button class="btn-main" onclick="nextStep(2)">En un parque</button>
-        <button class="btn-main" onclick="nextStep(2)">En Neiva</button>
-        <button class="btn-main" onclick="nextStep(2)">En el cine</button>
-      </div>
-    </div>
-
-    <div id="step-2" class="hidden">
-      <h1>Un corazón para ti</h1>
-      <p>Presiona el corazón hasta que se llene de amor...</p>
-      <div id="mainHeart" style="font-size: 80px; cursor: pointer; margin: 20px 0;">🤍</div>
-      <p id="progressText">0%</p>
-    </div>
-
-    <div id="step-3" class="hidden">
-      <h1 style="font-size: 1.5rem;">Una última pregunta...</h1>
+    <div id="step-final" class="hidden">
+      <h1>Una última cosa...</h1>
       <p>¿Quieres seguir escribiendo esta historia conmigo?</p>
-      <div class="btn-container" style="position: relative; height: 150px;">
+      <div class="btn-container" style="position: relative; min-height: 180px;">
         <button class="btn-main" id="yesBtn" onclick="jumpToFinal()" style="position: absolute; top: 0; z-index: 20;">¡SÍ, POR SIEMPRE! ❤️</button>
-        <button id="noBtn" onmouseover="moveNo()" onclick="moveNo()" style="position: absolute; top: 70px;">No</button>
+        <button id="noBtn" onmouseover="moveNo()" onclick="moveNo()" style="position: absolute; top: 75px;">No</button>
       </div>
     </div>
   </div>
 
   <script>
     let currentStep = 0;
-    let clicks = 0;
+    let quizIndex = 0;
+    let heartClicks = 0;
     let noCount = 0;
     const music = document.getElementById('bgMusic');
 
-    function nextStep(step) {
-      if(currentStep === 0) {
-        music.play().catch(() => console.log("Audio block"));
-      }
-      document.getElementById(`step-${currentStep}`).classList.add('hidden');
-      document.getElementById(`step-${step}`).classList.remove('hidden');
-      currentStep = step;
+    const questions = [
+      { q: "¿Qué anillo te regalé?", ops: ["Un anillo de girasol", "Anillo de plata", "No tengo"], ans: 0 },
+      { q: "¿Por dónde nos conocimos?", ops: ["Facebook", "X (Twitter)", "Instagram"], ans: 2 },
+      { q: "¿Cuándo cumplimos mes?", ops: ["El 20", "El 19", "El 16"], ans: 2 },
+      { q: "¿Qué es lo que más me gusta de ti?", ops: ["Tus ojos", "Tu cuerpo", "Tu sonrisa"], special: true }
+    ];
 
-      if(step === 2) startHeartGame();
+    function nextStep(step) {
+      if(currentStep === 0) music.play().catch(() => {});
+      document.getElementById('step-0').classList.add('hidden');
+      
+      if(step === 1) {
+        document.getElementById('quiz-container').classList.remove('hidden');
+        showQuestion();
+      }
     }
 
-    // Juego del corazón
-    function startHeartGame() {
+    function showQuestion() {
+      const data = questions[quizIndex];
+      document.getElementById('quiz-title').innerText = `Pregunta ${quizIndex + 1}`;
+      document.getElementById('quiz-question').innerText = data.q;
+      const optionsDiv = document.getElementById('quiz-options');
+      optionsDiv.innerHTML = "";
+
+      data.ops.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.className = "btn-main";
+        btn.innerText = opt;
+        btn.onclick = () => handleAnswer(index, data.special);
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function handleAnswer(index, isSpecial) {
+      if(isSpecial) {
+        const optionsDiv = document.getElementById('quiz-options');
+        optionsDiv.innerHTML = `<button class="btn-main" style="background: #333;" onclick="showEmotionalPart()">Ninguna</button>`;
+      } else {
+        if(index === questions[quizIndex].ans) {
+          quizIndex++;
+          if(quizIndex < questions.length) showQuestion();
+        } else {
+          alert("¡Casi! Inténtalo de nuevo ❤️");
+        }
+      }
+    }
+
+    function showEmotionalPart() {
+      document.getElementById('quiz-container').classList.add('hidden');
+      document.getElementById('heart-step').classList.remove('hidden');
+      setupHeart();
+    }
+
+    function setupHeart() {
       const h = document.getElementById('mainHeart');
       h.onclick = () => {
-        clicks++;
-        let p = clicks * 10;
+        heartClicks++;
+        let p = heartClicks * 10;
         document.getElementById('progressText').innerText = p + "%";
-        h.style.transform = `scale(${1 + clicks*0.1})`;
+        h.style.transform = `scale(${1 + heartClicks * 0.1})`;
         
-        if(clicks === 3) h.innerText = "💖";
-        if(clicks === 6) h.innerText = "💗";
-        if(clicks === 10) {
+        if(heartClicks === 3) h.innerText = "💖";
+        if(heartClicks === 6) h.innerText = "💗";
+        if(heartClicks === 10) {
           h.innerText = "❤️";
-          setTimeout(() => nextStep(3), 500);
+          setTimeout(() => {
+            document.getElementById('heart-step').classList.add('hidden');
+            document.getElementById('step-final').classList.remove('hidden');
+          }, 600);
         }
       };
     }
 
-    // Lógica del Botón NO
-    const noPhrases = [
-      "¿Segura?", 
-      "Piénsalo bien...", 
-      "¿Tan rápido me dices que no?", 
-      "Valentina, por favor...", 
-      "Mira el botón de arriba 🙄", 
-      "¡No te dejaré! jaja"
-    ];
-
     function moveNo() {
       const noBtn = document.getElementById('noBtn');
       const yesBtn = document.getElementById('yesBtn');
-      
-      // Mover el botón NO a un lugar aleatorio
       const x = Math.random() * 100 - 50;
-      const y = Math.random() * 50 + 50;
+      const y = Math.random() * 60 + 40;
       noBtn.style.transform = `translate(${x}px, ${y}px)`;
-      
-      // Hacer crecer el botón SI
       noCount++;
-      let currentSize = 1 + (noCount * 0.2);
-      yesBtn.style.transform = `scale(${currentSize})`;
-      
-      // Cambiar texto del botón NO
-      if(noCount < noPhrases.length) {
-        noBtn.innerText = noPhrases[noCount];
-      }
+      yesBtn.style.transform = `scale(${1 + (noCount * 0.15)})`;
+      const phrases = ["¿Segura?", "Piénsalo...", "Mmm... no", "¡Epa!", "¡El otro botón!"];
+      if(noCount < phrases.length) noBtn.innerText = phrases[noCount];
     }
 
-    // El Gran Final
     function jumpToFinal() {
       document.getElementById('gameCard').classList.add('hidden');
       document.getElementById('finalOverlay').classList.add('show');
-      
-      // Lluvia de corazones
       setInterval(createHeart, 200);
-      
-      // Si saltó por el botón dorado, intentar poner la música en climax
       if(music.duration > 60) music.currentTime = 65;
-      music.volume = 1;
       music.play();
     }
 
     function createHeart() {
       const h = document.createElement('div');
-      h.classList.add('heart');
+      h.classList.add('heart-particle');
       h.innerHTML = "❤️";
       h.style.left = Math.random() * 100 + "vw";
       h.style.top = "100vh";
       h.style.fontSize = Math.random() * 20 + 20 + "px";
-      h.style.opacity = Math.random();
       document.body.appendChild(h);
-      
       setTimeout(() => h.remove(), 4000);
     }
   </script>
